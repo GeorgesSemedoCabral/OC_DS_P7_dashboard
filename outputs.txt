@@ -1,0 +1,63 @@
+Train samples: 307511, test samples: 48744
+Bureau df shape: (305811, 116)
+Process bureau and bureau_balance - done in 28 s
+Previous applications df shape: (338857, 249)
+Process previous_applications - done in 36 s
+Pos-cash balance df shape: (337252, 18)
+Process POS-CASH balance - done in 17 s
+Installments payments df shape: (339587, 26)
+Process installments payments - done in 31 s
+Credit card balance df shape: (103558, 141)
+Process credit card balance - done in 28 s
+Starting DUMMY. Train shape: (307507, 798), test shape: (48744, 798)
+Fold  1 AUC : 0.500000
+Fold  2 AUC : 0.500000
+Fold  3 AUC : 0.500000
+Fold  4 AUC : 0.500000
+Fold  5 AUC : 0.500000
+Fold  6 AUC : 0.500000
+Fold  7 AUC : 0.500000
+Fold  8 AUC : 0.500000
+Fold  9 AUC : 0.500000
+Fold 10 AUC : 0.500000
+Full AUC score 0.500000
+Run dummies with k-folds - done in 28 s
+Starting DUMMY. Train shape: (307507, 798), test shape: (48744, 798)
+Fold  1 AUC : 0.500000
+Fold  2 AUC : 0.500000
+Fold  3 AUC : 0.500000
+Fold  4 AUC : 0.500000
+Fold  5 AUC : 0.500000
+Fold  6 AUC : 0.500000
+Fold  7 AUC : 0.500000
+Fold  8 AUC : 0.500000
+Fold  9 AUC : 0.500000
+Fold 10 AUC : 0.500000
+Full AUC score 0.500000
+Run dummies with stratified k-folds - done in 26 s
+Starting LOG. Train shape: (307507, 798), test shape: (48744, 797)
+Fold  1 AUC : 0.713295
+Fold  2 AUC : 0.710523
+Fold  3 AUC : 0.706248
+Fold  4 AUC : 0.710456
+Fold  5 AUC : 0.718758
+Fold  6 AUC : 0.701562
+Fold  7 AUC : 0.715169
+Fold  8 AUC : 0.708133
+Fold  9 AUC : 0.725272
+Fold 10 AUC : 0.719733
+Full AUC score 0.712827
+Run logistic regression with k-folds - done in 444 s
+Starting LOG. Train shape: (307507, 798), test shape: (48744, 797)
+Fold  1 AUC : 0.709511
+Fold  2 AUC : 0.711856
+Fold  3 AUC : 0.717808
+Fold  4 AUC : 0.716420
+Fold  5 AUC : 0.712468
+Fold  6 AUC : 0.712195
+Fold  7 AUC : 0.715317
+Fold  8 AUC : 0.715267
+Fold  9 AUC : 0.706972
+Fold 10 AUC : 0.710786
+Full AUC score 0.712866
+Run logistic regression with stratified k-folds - done in 403 s
