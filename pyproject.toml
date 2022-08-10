@@ -13,6 +13,7 @@ lightgbm = "^3.3.2"
 plotly = "^5.9.0"
 kaleido = "0.2.1"
 imblearn = "^0.0"
+lime = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
