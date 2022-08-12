@@ -15,9 +15,10 @@ kaleido = "0.2.1"
 imblearn = "^0.0"
 lime = "^0.2.0"
 llvmlite = "^0.39.0"
-numpy = "1.22.4"
+numpy = "1.22"
 numba = "0.56"
 shap = "^0.41.0"
+bayesian-optimization = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
