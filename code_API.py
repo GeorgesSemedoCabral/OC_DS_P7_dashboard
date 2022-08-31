@@ -39,7 +39,10 @@ def profile_and_predict(client: ClientID):
     test_feats = test_df[feats]
     app_df = test_feats[test_feats["SK_ID_CURR"]==data["SK_ID_CURR"]]
     app_test = app_df.drop(columns="SK_ID_CURR")
-    proba = lgbm_model.predict_proba(app_test).item(1)
+    proba = lgbm_model.predict_proba(
+        app_test,
+        num_iteration=lgbm_model.best_iteration_
+    ).item(1)
     if proba >= data["threshold"]:
         score = "B"
     else:
