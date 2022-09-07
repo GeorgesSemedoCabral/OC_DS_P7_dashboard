@@ -1,5 +1,4 @@
 import joblib
-import numpy as np
 import pandas as pd
 import shap
 import uvicorn
@@ -83,9 +82,12 @@ def client_features(client: ClientID2):
     app_df = test_feats[test_feats["SK_ID_CURR"]==data["SK_ID_CURR"]]
     app_test = app_df.drop(columns="SK_ID_CURR")
     shap_values = explainer.shap_values(app_test)
-    plot = shap.force_plot(explainer.expected_value[1], shap_values[1],
-                           app_test)
-    return plot
+    return {
+        "explain_value": explainer.expected_value[1],
+        "shap_values": shap_values[1].tolist(),
+        "app_values": app_test.values.tolist(),
+        "features": app_test.columns.tolist()
+    }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
