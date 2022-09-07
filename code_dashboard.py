@@ -3,49 +3,85 @@ import pandas as pd
 import plotly.graph_objects as go
 import requests
 import shap
-from dash import Dash, dcc, html, Input, Output
+from dash import Dash, dcc, html, Input, Output, exceptions
 from plotly.subplots import make_subplots
 
 client = pd.read_csv("client_test.csv")
 
-#client_ID = {"SK_ID_CURR": 100001, "threshold": 0.5}
-#score = requests.post("http://127.0.0.1:8000/predict", json=client_ID)
-#client_ID2 = {"SK_ID_CURR": 100001}
-#features = requests.post("http://127.0.0.1:8000/features", json=client_ID2)
-
 app = Dash(__name__)
 
 app.layout = html.Div([
-    html.Label("Analyse globale"),
-    dcc.Graph(id="graph_01"),
-    html.P("Names"),
-    dcc.Dropdown(
-        id="names_drop",
-        options=[
-            "CODE_GENDER",
-            "DAYS_BIRTH",
-            "NAME_FAMILY_STATUS",
-            "CNT_CHILDREN",
-            "NAME_HOUSING_TYPE",
-            "NAME_EDUCATION_TYPE",
-            "OCCUPATION_TYPE",
-            "ORGANIZATION_TYPE"
-        ],
-        value="CODE_GENDER",
-        clearable=False
-    ),
-    html.P("Values"),
-    dcc.Dropdown(
-        id="values_drop",
-        options=[
-            "AMT_INCOME_TOTAL",
-            "AMT_CREDIT",
-            "AMT_ANNUITY"
-        ],
-        value="AMT_INCOME_TOTAL",
-        clearable=False
-    ),
+    html.Div([
+        html.H1("Client credit score"),
+        html.H4("Enter loan or client ID here:"),
+        dcc.Input(id="id_input", type="number", debounce=True,
+                  min=100001, max=999999),
+        html.H4("Model response:"),
+        html.H4(id="id_output"),
+        html.H4(id="id_error", style={"color": "red"}),
+        """insérer figure SHAP ici"""
+    ]),
+    html.Div([
+        html.H1("Client EDA"),
+        """Code en cours de rédaction"""
+    ]),
+    html.Div([
+        html.H1("Global EDA"),
+        dcc.Graph(id="graph_01"),
+        html.H4("Names"),
+        dcc.Dropdown(
+            id="names_drop",
+            options=[
+                "CODE_GENDER",
+                "DAYS_BIRTH",
+                "NAME_FAMILY_STATUS",
+                "CNT_CHILDREN",
+                "NAME_HOUSING_TYPE",
+                "NAME_EDUCATION_TYPE",
+                "OCCUPATION_TYPE",
+                "ORGANIZATION_TYPE"
+            ],
+            value="CODE_GENDER",
+            clearable=False
+        ),
+        html.H4("Values"),
+        dcc.Dropdown(
+            id="values_drop",
+            options=[
+                "AMT_INCOME_TOTAL",
+                "AMT_CREDIT",
+                "AMT_ANNUITY"
+            ],
+            value="AMT_INCOME_TOTAL",
+            clearable=False
+        ),
+    ])
 ])
+
+@app.callback(
+    Output("id_output", "children"),
+    Output("id_error", "children"),
+    Input("id_input", "value")
+)
+def call_score(id_input):
+    if id_input is None:
+        raise exceptions.PreventUpdate
+    if id_input not in list(client["SK_ID_CURR"]):
+        return "", "Not an existing ID !"
+    client_ID = {"SK_ID_CURR": id_input, "threshold": 0.1}
+    score = requests.post("http://127.0.0.1:8000/predict", json=client_ID)
+    return "Prediction : {} | Probability : {}".format(
+        score.json()["SCORE"], score.json()["PROBA"]
+    ), ""
+
+"""@app.callback(
+    Output("id_shap", "figure"),
+    Input("id_input", "value")
+)
+def call_features(id_input):
+    client_ID2 = {"SK_ID_CURR": id_input}
+    features = requests.post("http://127.0.0.1:8000/features", json=client_ID2)
+    return features.content"""
 
 @app.callback(
     Output("graph_01", "figure"),
