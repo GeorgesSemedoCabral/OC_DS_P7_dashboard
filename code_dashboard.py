@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 #import plotly.express as px
 import plotly.graph_objects as go
@@ -10,6 +11,8 @@ client = pd.read_csv("client_test.csv")
 
 app = Dash(__name__)
 
+shap.initjs()
+
 app.layout = html.Div([
     html.Div([
         html.H1("Client credit score"),
@@ -18,12 +21,15 @@ app.layout = html.Div([
                   min=100001, max=999999),
         html.H4("Model response:"),
         html.H4(id="id_output"),
-        html.H4(id="id_error", style={"color": "red"}),
-        """insérer figure SHAP ici"""
+        html.H4(id="id_error", style={"color": "red"})
+    ]),
+    html.Div([
+        html.H4("Features importance with SHAP:"),
+        html.Div(id="json_output")
     ]),
     html.Div([
         html.H1("Client EDA"),
-        """Code en cours de rédaction"""
+        """Our data scientist is working on it ;-)"""
     ]),
     html.Div([
         html.H1("Global EDA"),
@@ -74,14 +80,26 @@ def call_score(id_input):
         score.json()["SCORE"], score.json()["PROBA"]
     ), ""
 
-"""@app.callback(
-    Output("id_shap", "figure"),
+@app.callback(
+    Output("json_output", "children"),
     Input("id_input", "value")
 )
 def call_features(id_input):
+    if id_input is None:
+        raise exceptions.PreventUpdate
+    if id_input not in list(client["SK_ID_CURR"]):
+        raise exceptions.PreventUpdate
     client_ID2 = {"SK_ID_CURR": id_input}
     features = requests.post("http://127.0.0.1:8000/features", json=client_ID2)
-    return features.content"""
+    plot = shap.force_plot(
+        features.json()["explain_value"],
+        np.array(features.json()["shap_values"]),
+        np.array(features.json()["app_values"]),
+        np.array(features.json()["features"])
+    )
+    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+    return html.Iframe(srcDoc=shap_html,
+                       style={"width": "100%", "height": "200px", "border": 0})
 
 @app.callback(
     Output("graph_01", "figure"),
