@@ -11,7 +11,7 @@ client = pd.read_csv("client_test.csv")
 
 app = Dash(__name__)
 
-shap.initjs()
+server = app.server
 
 app.layout = html.Div([
     html.Div([
@@ -99,7 +99,7 @@ def call_features(id_input):
     )
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     return html.Iframe(srcDoc=shap_html,
-                       style={"width": "100%", "height": "200px", "border": 0})
+                       style={"width": "200%", "height": "125px", "border": 0})
 
 @app.callback(
     Output("graph_01", "figure"),
