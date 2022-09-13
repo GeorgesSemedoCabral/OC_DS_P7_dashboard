@@ -71,6 +71,7 @@ fastjsonschema==2.16.1; python_full_version >= "3.7.0" and python_version >= "3.
 flask-compress==1.12; python_version >= "3.6"
 flask==2.2.2; python_version >= "3.7"
 fonttools==4.37.1; python_version >= "3.7"
+gunicorn==20.1.0; python_version >= "3.5"
 h11==0.13.0; python_version >= "3.7"
 idna==3.3; python_version >= "3.7" and python_version < "4" and python_full_version >= "3.6.2" \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
