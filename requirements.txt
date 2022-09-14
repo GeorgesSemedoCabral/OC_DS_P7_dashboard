@@ -265,7 +265,8 @@ numpy==1.22.0; python_version >= "3.8" \
 packaging==21.3; python_version >= "3.7" \
     --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522 \
     --hash=sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb
-pandas==1.4.3; python_version >= "3.8"
+pandas==1.4.3; python_version >= "3.8" \
+    --hash=sha256:6f803320c9da732cc79210d7e8cc5c8019aad512589c910c66529eb1b1818230
 pandocfilters==1.5.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7" \
     --hash=sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f \
     --hash=sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38
@@ -279,11 +280,13 @@ pickleshare==0.7.5; python_version >= "3.8" \
     --hash=sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56 \
     --hash=sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca
 pillow==9.2.0; python_version >= "3.7"
-plotly==5.9.0; python_version >= "3.6"
+plotly==5.9.0; python_version >= "3.6" \
+    --hash=sha256:9acf168915101caac82ed6da3390840c622d9d4e4a78cbe1260f52501efc3117
 prometheus-client==0.14.1; python_version >= "3.7" \
     --hash=sha256:522fded625282822a89e2773452f42df14b5a8e84a86433e3f8a189c1d54dc01 \
     --hash=sha256:5459c427624961076277fdc6dc50540e2bacb98eebde99886e59ec55ed92093a
-prompt-toolkit==3.0.30; python_full_version >= "3.6.2" and python_version >= "3.8"
+prompt-toolkit==3.0.30; python_full_version >= "3.6.2" and python_version >= "3.8" \
+    --hash=sha256:d8916d3f62a7b67ab353a952ce4ced6a1d2587dfe9ef8ebc30dd7c386751f289
 psutil==5.9.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7" \
     --hash=sha256:799759d809c31aab5fe4579e50addf84565e71c1dc9f1c31258f159ff70d3f87 \
     --hash=sha256:9272167b5f5fbfe16945be3db475b3ce8d792386907e673a209da686176552af \
