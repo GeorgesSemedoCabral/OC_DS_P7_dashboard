@@ -528,8 +528,6 @@ scikit-learn==1.1.1; python_version >= "3.8" \
     --hash=sha256:c2dad2bfc502344b869d4a3f4aa7271b2a5f4fe41f7328f404844c51612e2c58 \
     --hash=sha256:22145b60fef02e597a8e7f061ebc7c51739215f11ce7fcd2ca9af22c31aa9f86 \
     --hash=sha256:45c0f6ae523353f1d99b85469d746f9c497410adff5ba8b24423705b6956a86e
-scipy==1.6.1; python_version >= "3.8" \
-    --hash=sha256:a5193a098ae9f29af283dcf0041f762601faf2e595c0db1da929875b7570353f
 send2trash==1.8.0; python_version >= "3.7" \
     --hash=sha256:f20eaadfdb517eaca5ce077640cb261c7d2698385a6a0f072a4a5447fd49fa08 \
     --hash=sha256:d2c24762fd3759860a0aff155e45871447ea58d2be6bdd39b5c8f966a0c99c2d
