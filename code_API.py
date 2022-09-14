@@ -16,7 +16,7 @@ class ClientID(BaseModel):
 @app.post("/predict")
 def profile_and_predict(client: ClientID):
     data = client.dict()
-    client_df = pd.read_csv("client_test.csv")
+    client_df = pd.read_csv("data/client_test.csv")
     client_df.fillna("No information", inplace=True)
     app_client = client_df[client_df["SK_ID_CURR"]==data["SK_ID_CURR"]]
     gender = app_client.loc[:, "CODE_GENDER"].to_numpy().item(0)

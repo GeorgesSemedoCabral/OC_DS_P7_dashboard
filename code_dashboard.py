@@ -7,7 +7,7 @@ import shap
 from dash import Dash, dcc, html, Input, Output, exceptions
 from plotly.subplots import make_subplots
 
-client = pd.read_csv("client_test.csv")
+client = pd.read_csv("data/client_test.csv")
 
 app = Dash(__name__)
 

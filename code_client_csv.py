@@ -17,4 +17,4 @@ client["AMT_INCOME_TOTAL"] = client["AMT_INCOME_TOTAL"].apply(
 )
 client["AMT_ANNUITY"] = client["AMT_ANNUITY"].astype("float64")
 
-client.to_csv("client_test.csv", index=False)
+client.to_csv("data/client_test.csv", index=False)
