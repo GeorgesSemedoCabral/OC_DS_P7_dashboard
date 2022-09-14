@@ -1,1 +1,1 @@
-web: gunicorn code_dashboard:server
+web: gunicorn run:app
