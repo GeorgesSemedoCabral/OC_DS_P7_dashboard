@@ -63,10 +63,14 @@ colorama==0.4.5; python_version >= "3.8" and python_full_version < "3.0.0" and p
 cycler==0.11.0; python_version >= "3.7" \
     --hash=sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3 \
     --hash=sha256:9c87405839a19696e837b3b818fed3f5f69f16f1eec1a1ad77e043dcea9c772f
-dash-core-components==2.0.0; python_version >= "3.6"
-dash-html-components==2.0.0; python_version >= "3.6"
-dash-table==5.0.0; python_version >= "3.6"
-dash==2.6.1; python_version >= "3.6"
+dash-core-components==2.0.0; python_version >= "3.6" \
+    --hash=sha256:52b8e8cce13b18d0802ee3acbc5e888cb1248a04968f962d63d070400af2e346
+dash-html-components==2.0.0; python_version >= "3.6" \
+    --hash=sha256:b42cc903713c9706af03b3f2548bda4be7307a7cf89b7d6eae3da872717d1b63
+dash-table==5.0.0; python_version >= "3.6" \
+    --hash=sha256:19036fa352bb1c11baf38068ec62d172f0515f73ca3276c79dee49b95ddc16c9
+dash==2.6.1; python_version >= "3.6" \
+    --hash=sha256:911c0d5ef017e3c2ff2e756a01fb9388f2a80ed6084a5beaac812fb436192f90
 debugpy==1.6.2; python_version >= "3.7"
 decorator==5.1.1; python_version >= "3.8" \
     --hash=sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186 \
