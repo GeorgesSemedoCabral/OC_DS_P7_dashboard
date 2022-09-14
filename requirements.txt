@@ -258,7 +258,8 @@ networkx==2.8.5; python_version >= "3.8" \
 notebook==6.4.12; python_version >= "3.7" \
     --hash=sha256:8c07a3bb7640e371f8a609bdbb2366a1976c6a2589da8ef917f761a61e3ad8b1 \
     --hash=sha256:6268c9ec9048cff7a45405c990c29ac9ca40b0bc3ec29263d218c5e01f2b4e86
-numba==0.56.0; python_version >= "3.7"
+numba==0.56.0; python_version >= "3.7" \
+    --hash=sha256:a4482b921644c8415e15ccf180d866ea95fc499fe29ca5f27a9aa61aa484133e
 numpy==1.22.0; python_version >= "3.8"
 packaging==21.3; python_version >= "3.7" \
     --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522 \
