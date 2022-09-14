@@ -100,6 +100,7 @@ requests==2.28.1; python_version >= "3.7" and python_version < "4"
 scikit-image==0.19.3; python_version >= "3.7"
 scikit-learn==1.1.1; python_version >= "3.8"
 scipy==1.6.1; python_version >= "3.8"
+    --hash=sha256:8d3faa40ac16c6357aaf7ea50394ea6f1e8e99d75e927a51102b1943b311b4d9
 send2trash==1.8.0; python_version >= "3.7"
 setuptools-scm==7.0.5; python_version >= "3.7"
 shap==0.41.0
