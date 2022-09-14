@@ -242,7 +242,8 @@ matplotlib==3.5.2; python_version >= "3.7" \
 mistune==0.8.4; python_version >= "3.7" \
     --hash=sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4 \
     --hash=sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e
-nbclient==0.6.6; python_full_version >= "3.7.0" and python_version >= "3.7"
+nbclient==0.6.6; python_full_version >= "3.7.0" and python_version >= "3.7" \
+    --hash=sha256:09bae4ea2df79fa6bc50aeb8278d8b79d2036792824337fa6eee834afae17312
 nbconvert==6.5.0; python_version >= "3.7" \
     --hash=sha256:c56dd0b8978a1811a5654f74c727ff16ca87dd5a43abd435a1c49b840fcd8360 \
     --hash=sha256:223e46e27abe8596b8aed54301fadbba433b7ffea8196a68fd7b1ff509eee99d
@@ -252,7 +253,8 @@ nbformat==5.4.0; python_full_version >= "3.7.0" and python_version >= "3.7" \
 nest-asyncio==1.5.5; python_full_version >= "3.7.0" and python_version >= "3.7" \
     --hash=sha256:b98e3ec1b246135e4642eceffa5a6c23a3ab12c82ff816a92c612d68205813b2 \
     --hash=sha256:e442291cd942698be619823a17a86a5759eabe1f8613084790de189fe9e16d65
-networkx==2.8.5; python_version >= "3.8"
+networkx==2.8.5; python_version >= "3.8" \
+    --hash=sha256:a762f4b385692d9c3a6f2912d058d76d29a827deaedf9e63ed14d397b8030687
 notebook==6.4.12; python_version >= "3.7" \
     --hash=sha256:8c07a3bb7640e371f8a609bdbb2366a1976c6a2589da8ef917f761a61e3ad8b1 \
     --hash=sha256:6268c9ec9048cff7a45405c990c29ac9ca40b0bc3ec29263d218c5e01f2b4e86
