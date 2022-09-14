@@ -150,8 +150,9 @@ jupyterlab-pygments==0.2.2; python_version >= "3.7" \
 jupyterlab-widgets==1.1.1; python_version >= "3.6" \
     --hash=sha256:90ab47d99da03a3697074acb23b2975ead1d6171aa41cb2812041a7f2a08177a
 kaleido==0.2.1 \
-    --hash=sha256:4670985f28913c2d063c5734d125ecc28e40810141bdb0a46f15b76c1d45f23c
-kiwisolver==1.4.4; python_version >= "3.7"
+    --hash=sha256:aa21cf1bf1c78f8fa50a9f7d45e1003c387bd3d6fe0a767cfbbf344b95bdc3a8
+kiwisolver==1.4.4; python_version >= "3.7" \
+    --hash=sha256:
 lightgbm==3.3.2
 lime==0.2.0.1; python_version >= "3.5"
 llvmlite==0.39.0; python_version >= "3.7"
