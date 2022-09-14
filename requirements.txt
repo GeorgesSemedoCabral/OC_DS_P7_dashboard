@@ -44,7 +44,8 @@ beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.
     --hash=sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693
 bleach==5.0.1; python_version >= "3.7" \
     --hash=sha256:085f7f33c15bd408dd9b17a4ad77c577db66d76203e5984b1bd59baeee948b2a
-brotli==1.0.9; python_version >= "3.6"
+brotli==1.0.9; python_version >= "3.6" \
+    --hash=sha256:44bb8ff420c1d19d91d79d8c3574b8954288bdff0273bf788954064d260d7ab0
 certifi==2022.6.15; python_version >= "3.7" and python_version < "4" \
     --hash=sha256:fe86415d55e84719d75f8b69414f6438ac3547d2078ab91b67e779ef69378412 \
     --hash=sha256:84c85a9078b11105f04f3036a9482ae10e4621616db313fe045dd24743a0820d
