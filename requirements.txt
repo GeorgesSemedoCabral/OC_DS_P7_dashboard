@@ -279,7 +279,8 @@ pexpect==4.8.0; sys_platform != "win32" and python_version >= "3.8" \
 pickleshare==0.7.5; python_version >= "3.8" \
     --hash=sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56 \
     --hash=sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca
-pillow==9.2.0; python_version >= "3.7"
+pillow==9.2.0; python_version >= "3.7" \
+    --hash=sha256:6e8c66f70fb539301e064f6478d7453e820d8a2c631da948a23384865cd95544
 plotly==5.9.0; python_version >= "3.6" \
     --hash=sha256:9acf168915101caac82ed6da3390840c622d9d4e4a78cbe1260f52501efc3117
 prometheus-client==0.14.1; python_version >= "3.7" \
