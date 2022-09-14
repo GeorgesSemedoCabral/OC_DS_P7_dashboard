@@ -75,7 +75,7 @@ def call_score(id_input):
     if id_input not in list(client["SK_ID_CURR"]):
         return "", "Not an existing ID !"
     client_ID = {"SK_ID_CURR": id_input, "threshold": 0.1}
-    score = requests.post("http://127.0.0.1:8000/predict", json=client_ID)
+    score = requests.post("http://0.0.0.0/predict", json=client_ID)
     return "Prediction : {} | Probability : {}".format(
         score.json()["SCORE"], score.json()["PROBA"]
     ), ""
@@ -90,7 +90,7 @@ def call_features(id_input):
     if id_input not in list(client["SK_ID_CURR"]):
         raise exceptions.PreventUpdate
     client_ID2 = {"SK_ID_CURR": id_input}
-    features = requests.post("http://127.0.0.1:8000/features", json=client_ID2)
+    features = requests.post("http://0.0.0.0/features", json=client_ID2)
     plot = shap.force_plot(
         features.json()["explain_value"],
         np.array(features.json()["shap_values"]),
