@@ -153,7 +153,8 @@ kaleido==0.2.1 \
     --hash=sha256:aa21cf1bf1c78f8fa50a9f7d45e1003c387bd3d6fe0a767cfbbf344b95bdc3a8
 kiwisolver==1.4.4; python_version >= "3.7" \
     --hash=sha256:7577c1987baa3adc4b3c62c33bd1118c3ef5c8ddef36f0f2c950ae0b199e100d
-lightgbm==3.3.2
+lightgbm==3.3.2 \
+    --hash=sha256:f4cba3b4f29336ad7e801cb32d9b948ea4cc5300dda650b78bcdfe36b3e2c4b2
 lime==0.2.0.1; python_version >= "3.5" \
     --hash=sha256:76960e4f055feb53e89b5022383bafc87b63f25bac6265984b0a333d1a57f781
 llvmlite==0.39.0; python_version >= "3.7"
