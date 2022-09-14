@@ -8,18 +8,6 @@ from pydantic import BaseModel
 app = FastAPI()
 client_df = pd.read_csv("data/client_test.csv")
 client_df.fillna("No information", inplace=True)
-test_df = pd.read_csv("data/split_csv_pandas/chunk0.csv")
-for i in range(1, 5):
-    df_chunk = pd.read_csv("data/split_csv_pandas/chunk{}.csv".format(i))
-    test_df = test_df.append(df_chunk)
-    del df_chunk
-feats = [f for f in test_df.columns if f not in [
-    "TARGET",
-    "SK_ID_BUREAU",
-    "SK_ID_PREV",
-    "index"
-]]
-test_feats = test_df[feats]
 lgbm_model = joblib.load("models/balanced_lgbm_model.sav")
 explainer = shap.TreeExplainer(lgbm_model)
 
@@ -42,6 +30,21 @@ def profile_and_predict(client: ClientID):
     income = app_client.loc[:, "AMT_INCOME_TOTAL"].to_numpy().item(0)
     credit = app_client.loc[:, "AMT_CREDIT"].to_numpy().item(0)
     annuity = app_client.loc[:, "AMT_ANNUITY"].to_numpy().item(0)
+    for i in range(0, 5):
+        df_chunk = pd.read_csv("data/split_csv_pandas/chunk{}.csv".format(i))
+        if data["SK_ID_CURR"] not in list(df_chunk["SK_ID_CURR"]):
+            del df_chunk
+        else:
+            test_df = df_chunk
+            del df_chunk
+            break
+    feats = [f for f in test_df.columns if f not in [
+        "TARGET",
+        "SK_ID_BUREAU",
+        "SK_ID_PREV",
+        "index"
+    ]]
+    test_feats = test_df[feats]
     app_df = test_feats[test_feats["SK_ID_CURR"]==data["SK_ID_CURR"]]
     app_test = app_df.drop(columns="SK_ID_CURR")
     proba = lgbm_model.predict_proba(
@@ -75,6 +78,21 @@ class ClientID2(BaseModel):
 @app.post("/features")
 def client_features(client: ClientID2):
     data = client.dict()
+    for i in range(0, 5):
+        df_chunk = pd.read_csv("data/split_csv_pandas/chunk{}.csv".format(i))
+        if data["SK_ID_CURR"] not in list(df_chunk["SK_ID_CURR"]):
+            del df_chunk
+        else:
+            test_df = df_chunk
+            del df_chunk
+            break
+    feats = [f for f in test_df.columns if f not in [
+        "TARGET",
+        "SK_ID_BUREAU",
+        "SK_ID_PREV",
+        "index"
+    ]]
+    test_feats = test_df[feats]
     app_df = test_feats[test_feats["SK_ID_CURR"]==data["SK_ID_CURR"]]
     app_test = app_df.drop(columns="SK_ID_CURR")
     shap_values = explainer.shap_values(app_test)
