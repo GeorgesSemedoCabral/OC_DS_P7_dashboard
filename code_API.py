@@ -6,8 +6,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
-client_df = pd.read_csv("data/client_test.csv")
-client_df.fillna("No information", inplace=True)
 lgbm_model = joblib.load("models/balanced_lgbm_model.sav")
 explainer = shap.TreeExplainer(lgbm_model)
 
@@ -18,18 +16,6 @@ class ClientID(BaseModel):
 @app.post("/predict")
 def profile_and_predict(client: ClientID):
     data = client.dict()
-    app_client = client_df[client_df["SK_ID_CURR"]==data["SK_ID_CURR"]]
-    gender = app_client.loc[:, "CODE_GENDER"].to_numpy().item(0)
-    age = app_client.loc[:, "DAYS_BIRTH"].to_numpy().item(0)
-    status = app_client.loc[:, "NAME_FAMILY_STATUS"].to_numpy().item(0)
-    children = app_client.loc[:, "CNT_CHILDREN"].to_numpy().item(0)
-    housing = app_client.loc[:, "NAME_HOUSING_TYPE"].to_numpy().item(0)
-    education = app_client.loc[:, "NAME_EDUCATION_TYPE"].to_numpy().item(0)
-    occupation = app_client.loc[:, "OCCUPATION_TYPE"].to_numpy().item(0)
-    organization = app_client.loc[:, "ORGANIZATION_TYPE"].to_numpy().item(0)
-    income = app_client.loc[:, "AMT_INCOME_TOTAL"].to_numpy().item(0)
-    credit = app_client.loc[:, "AMT_CREDIT"].to_numpy().item(0)
-    annuity = app_client.loc[:, "AMT_ANNUITY"].to_numpy().item(0)
     for i in range(0, 5):
         df_chunk = pd.read_csv("data/split_csv_pandas/chunk{}.csv".format(i))
         if data["SK_ID_CURR"] not in list(df_chunk["SK_ID_CURR"]):
@@ -57,17 +43,6 @@ def profile_and_predict(client: ClientID):
         score = "G"
     return {
         "client_ID": data["SK_ID_CURR"],
-        "gender": gender,
-        "age": age,
-        "status": status,
-        "children": children,
-        "housing": housing,
-        "education": education,
-        "occupation": occupation,
-        "organization": organization,
-        "monthly income (€, 05-18-2018)": income,
-        "credit (€)": credit,
-        "annuities (€)": annuity,
         "PROBA": proba,
         "SCORE": score
     }
