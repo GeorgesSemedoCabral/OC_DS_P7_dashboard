@@ -151,9 +151,11 @@ jupyterlab-widgets==1.1.1; python_version >= "3.6" \
     --hash=sha256:90ab47d99da03a3697074acb23b2975ead1d6171aa41cb2812041a7f2a08177a
 kaleido==0.2.1 \
     --hash=sha256:aa21cf1bf1c78f8fa50a9f7d45e1003c387bd3d6fe0a767cfbbf344b95bdc3a8
-kiwisolver==1.4.4; python_version >= "3.7"
+kiwisolver==1.4.4; python_version >= "3.7" \
+    --hash=sha256:7577c1987baa3adc4b3c62c33bd1118c3ef5c8ddef36f0f2c950ae0b199e100d
 lightgbm==3.3.2
-lime==0.2.0.1; python_version >= "3.5"
+lime==0.2.0.1; python_version >= "3.5" \
+    --hash=sha256:76960e4f055feb53e89b5022383bafc87b63f25bac6265984b0a333d1a57f781
 llvmlite==0.39.0; python_version >= "3.7"
 markupsafe==2.1.1; python_version >= "3.7" \
     --hash=sha256:86b1f75c4e7c2ac2ccdaec2b9022845dbb81880ca318bb7a0a01fbf7813e3812 \
