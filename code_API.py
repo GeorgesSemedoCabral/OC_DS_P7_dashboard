@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
-lgbm_model = joblib.load("balanced_lgbm_model.sav")
+lgbm_model = joblib.load("model/balanced_lgbm_model.sav")
 explainer = shap.TreeExplainer(lgbm_model)
 
 class ClientID(BaseModel):
