@@ -19,8 +19,3 @@ client["AMT_INCOME_TOTAL"] = client["AMT_INCOME_TOTAL"].apply(
 client["AMT_ANNUITY"] = client["AMT_ANNUITY"].astype("float64")
 #client.to_csv("data/client_test.csv", index=False)
 joblib.dump(client, "data/client_test.sav")
-
-"""for i, chunk in enumerate(pd.read_csv("preprocessed_test_df.csv",
-                          chunksize=10000)):
-    #chunk.to_csv("data/split_csv_pandas/chunk{}.csv".format(i), index=False)
-    joblib.dump(chunk, "data/split_csv_pandas/chunk{}.sav".format(i))"""
