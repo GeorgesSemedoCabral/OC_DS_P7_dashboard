@@ -1,3 +1,4 @@
+import joblib
 import numpy as np
 import pandas as pd
 #import plotly.express as px
@@ -7,7 +8,8 @@ import shap
 from dash import Dash, dcc, html, Input, Output, exceptions
 from plotly.subplots import make_subplots
 
-client = pd.read_csv("data/client_test.csv")
+#client = pd.read_csv("data/client_test.csv")
+client = joblib.load("data/client_test.sav")
 
 app = Dash(__name__)
 
