@@ -1,6 +1,5 @@
 import joblib
 import numpy as np
-import pandas as pd
 #import plotly.express as px
 import plotly.graph_objects as go
 import requests
@@ -8,7 +7,6 @@ import shap
 from dash import Dash, dcc, html, Input, Output, exceptions
 from plotly.subplots import make_subplots
 
-#client = pd.read_csv("data/client_test.csv")
 client = joblib.load("data/client_test.sav")
 
 app = Dash(__name__)
@@ -77,7 +75,10 @@ def call_score(id_input):
     if id_input not in list(client["SK_ID_CURR"]):
         return "", "Not an existing ID !"
     client_ID = {"SK_ID_CURR": id_input, "threshold": 0.1}
-    score = requests.post("http://0.0.0.0/predict", json=client_ID)
+    score = requests.post(
+        "https://oc-ds-p7-api.herokuapp.com/predict",
+        json=client_ID
+    )
     return "Prediction : {} | Probability : {}".format(
         score.json()["SCORE"], score.json()["PROBA"]
     ), ""
@@ -92,7 +93,10 @@ def call_features(id_input):
     if id_input not in list(client["SK_ID_CURR"]):
         raise exceptions.PreventUpdate
     client_ID2 = {"SK_ID_CURR": id_input}
-    features = requests.post("http://0.0.0.0/features", json=client_ID2)
+    features = requests.post(
+        "https://oc-ds-p7-api.herokuapp.com/features",
+        json=client_ID2
+    )
     plot = shap.force_plot(
         features.json()["explain_value"],
         np.array(features.json()["shap_values"]),
