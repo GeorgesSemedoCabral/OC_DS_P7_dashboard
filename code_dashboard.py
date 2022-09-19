@@ -1,7 +1,7 @@
 import joblib
+
 import numpy as np
 import pandas as pd
-#import plotly.express as px
 import plotly.graph_objects as go
 import requests
 import shap
@@ -41,7 +41,7 @@ client_rows = [
     "Occupation",
     "Organization",
     "Monthly income (€, 05-18-2018)",
-    "Credit (€)"
+    "Credit (€, 05-18-2018)"
 ]
 
 app.layout = html.Div([
@@ -63,13 +63,12 @@ app.layout = html.Div([
         html.Div(id="table_output")
     ]),
         html.Div([
-        html.H1("Client comparison"),
+        html.H1("Comparison with similar clients"),
         """Our data scientist is working on it ;)"""
     ]),
     html.Div([
-        html.H1("Global EDA"),
-        dcc.Graph(id="graph_01"),
-        html.H3("Names"),
+        html.H1("Comparison with all clients"),
+        html.H3("Filter by:"),
         dcc.Dropdown(
             id="names_drop",
             options=[
@@ -85,16 +84,7 @@ app.layout = html.Div([
             value="CODE_GENDER",
             clearable=False
         ),
-        html.H3("Values"),
-        dcc.Dropdown(
-            id="values_drop",
-            options=[
-                "AMT_INCOME_TOTAL",
-                "AMT_CREDIT",
-            ],
-            value="AMT_INCOME_TOTAL",
-            clearable=False
-        ),
+        dcc.Graph(id="graph_01")
     ])
 ])
 
@@ -186,48 +176,79 @@ def generate_table(id_input, n_clicks):
 @app.callback(
     Output("graph_01", "figure"),
     Input("names_drop", "value"),
-    Input("values_drop", "value"),
+    Input("id_input", "value"),
+    Input("input_button", "n_clicks")
 )
-def generate_figure(names_drop, values_drop):
-    #fig = go.Figure()
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        subplot_titles=["Names", "Values"],
-        specs=[[{"type":"pie"}, {"type":"pie"}]]
-    )
-    fig.add_trace(
-        go.Pie(
-            labels=list(client[names_drop].unique()),
-            values=list(client[names_drop].value_counts(sort=False)),
-        ),
-        row=1,
-        col=1
-    )
-    fig.add_trace(
-        go.Pie(
-            labels=list(client[names_drop].unique()),
-            values=list(
-                client.groupby(names_drop, sort=False)[values_drop].sum()
-            )
-        ),
-        row=1,
-        col=2
-    )
-    fig.update_traces(
-        hoverinfo="label+value+percent",
-        textinfo="percent",
-        textposition="inside"
-    )
-    fig.update_layout(
-        #uniformtext_minsize=12,
-        #uniformtext_mode="hide",
-        height=500,
-        width=1400,
-        template="simple_white",
-        showlegend=True
-    )
-    return fig
+def generate_figure(names_drop, id_input, n_clicks):
+    if n_clicks == 0:
+        raise exceptions.PreventUpdate
+    else:
+        if id_input is None:
+            raise exceptions.PreventUpdate
+        if id_input not in list(client["SK_ID_CURR"]):
+            raise exceptions.PreventUpdate
+        client_ID2 = {"SK_ID_CURR": id_input}
+        id_client = client[client["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
+        x = list(client[names_drop].unique())
+        client_x = x.index(id_client[names_drop].values)
+        fig = make_subplots(
+            rows=1,
+            cols=2,
+            subplot_titles=[
+                "Groups",
+                "Monthly incomes and credits (€, 05-18-2018)"
+            ],
+            specs=[[{"type":"pie"}, {"type":"xy"}]]
+        )
+        pull = [0, ] * len(x)
+        pull[client_x] = 0.2
+        fig.add_trace(
+            go.Pie(
+                labels=x,
+                values=list(client[names_drop].value_counts(sort=False)),
+                hoverinfo="label+value+percent",
+                textinfo="percent",
+                textposition="inside",
+                pull=pull
+            ),
+            row=1,
+            col=1
+        )
+        income_color = ["lightblue", ] * len(x)
+        credit_color = ["lightpink", ] * len(x)
+        income_color[client_x] = "blue"
+        credit_color[client_x] = "red"
+        fig.add_trace(
+            go.Bar(
+                x=x,
+                y=list(client.groupby(names_drop, sort=False)
+                       ["AMT_INCOME_TOTAL"].mean()),
+                name="Monthly income",
+                marker_color=income_color
+            ),
+            row=1,
+            col=2
+        )
+        fig.add_trace(
+            go.Bar(
+                x=x,
+                y=list(client.groupby(names_drop, sort=False)
+                       ["AMT_CREDIT"].mean()),
+                name="Credit",
+                marker_color=credit_color
+            ),
+            row=1,
+            col=2
+        )
+        fig.update_layout(
+            #uniformtext_minsize=12,
+            #uniformtext_mode="hide",
+            height=500,
+            width=1500,
+            template="simple_white",
+            showlegend=False
+        )
+        return fig
 
 if __name__ == "__main__":
     app.run(debug=True)
