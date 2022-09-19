@@ -62,10 +62,6 @@ app.layout = html.Div([
         html.H1("Client information"),
         html.Div(id="table_output")
     ]),
-        html.Div([
-        html.H1("Comparison with similar clients"),
-        """Our data scientist is working on it ;)"""
-    ]),
     html.Div([
         html.H1("Comparison with all clients"),
         html.H3("Filter by:"),
@@ -85,6 +81,44 @@ app.layout = html.Div([
             clearable=False
         ),
         dcc.Graph(id="graph_01")
+    ]),
+    html.Div([
+        html.H1("Comparison with similar clients"),
+        html.H3("Group by:"),
+        dcc.Dropdown(
+            id="group_drop",
+            options=[
+                "CODE_GENDER",
+                "DAYS_BIRTH",
+                "NAME_FAMILY_STATUS",
+                "CNT_CHILDREN",
+                "NAME_HOUSING_TYPE",
+                "NAME_EDUCATION_TYPE",
+                "OCCUPATION_TYPE",
+                "ORGANIZATION_TYPE"
+            ],
+            value="CODE_GENDER",
+            clearable=False
+        ),
+        html.Br(),
+        html.Div(id="remind_output"),
+        html.H3("Filter by:"),
+        dcc.Dropdown(
+            id="filter_drop",
+            options=[
+                "CODE_GENDER",
+                "DAYS_BIRTH",
+                "NAME_FAMILY_STATUS",
+                "CNT_CHILDREN",
+                "NAME_HOUSING_TYPE",
+                "NAME_EDUCATION_TYPE",
+                "OCCUPATION_TYPE",
+                "ORGANIZATION_TYPE"
+            ],
+            value="CODE_GENDER",
+            clearable=False
+        ),
+        dcc.Graph(id="graph_02")
     ])
 ])
 
@@ -165,7 +199,7 @@ def generate_table(id_input, n_clicks):
             "INFO" : client_rows,
             "CLIENT" : list(
                 id_client.loc[:, i].to_numpy().item(0) for i in client_data
-            ),
+            )
         })
         return DataTable(
             data=df.to_dict("records"),
@@ -179,7 +213,7 @@ def generate_table(id_input, n_clicks):
     Input("id_input", "value"),
     Input("input_button", "n_clicks")
 )
-def generate_figure(names_drop, id_input, n_clicks):
+def generate_figure_all(names_drop, id_input, n_clicks):
     if n_clicks == 0:
         raise exceptions.PreventUpdate
     else:
@@ -195,10 +229,10 @@ def generate_figure(names_drop, id_input, n_clicks):
             rows=1,
             cols=2,
             subplot_titles=[
-                "Groups",
+                "Groups distribution",
                 "Monthly incomes and credits (€, 05-18-2018)"
             ],
-            specs=[[{"type":"pie"}, {"type":"xy"}]]
+            specs=[[{"type": "pie"}, {"type": "xy"}]]
         )
         pull = [0, ] * len(x)
         pull[client_x] = 0.2
@@ -249,6 +283,111 @@ def generate_figure(names_drop, id_input, n_clicks):
             showlegend=False
         )
         return fig
+
+@app.callback(
+    Output("graph_02", "figure"),
+    Input("group_drop", "value"),
+    Input("filter_drop", "value"),
+    Input("id_input", "value"),
+    Input("input_button", "n_clicks")
+)
+def generate_figure_sim(group_drop, filter_drop, id_input, n_clicks):
+    if n_clicks == 0:
+        raise exceptions.PreventUpdate
+    else:
+        if id_input is None:
+            raise exceptions.PreventUpdate
+        if id_input not in list(client["SK_ID_CURR"]):
+            raise exceptions.PreventUpdate
+        client_ID2 = {"SK_ID_CURR": id_input}
+        id_client = client[client["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
+        group = client[client[group_drop].values==id_client[group_drop].values]
+        x = list(group[filter_drop].unique())
+        client_x = x.index(id_client[filter_drop].values)
+        fig = make_subplots(
+            rows=1,
+            cols=2,
+            subplot_titles=[
+                "Sub-groups distribution",
+                "Monthly incomes and credits (€, 05-18-2018)"
+            ],
+            specs=[[{"type": "pie"}, {"type": "xy"}]]
+        )
+        pull = [0, ] * len(x)
+        pull[client_x] = 0.2
+        fig.add_trace(
+            go.Pie(
+                labels=x,
+                values=list(group[filter_drop].value_counts(sort=False)),
+                hoverinfo="label+value+percent",
+                textinfo="percent",
+                textposition="inside",
+                pull=pull
+            ),
+            row=1,
+            col=1
+        )
+        income_color = ["lightblue", ] * len(x)
+        credit_color = ["lightpink", ] * len(x)
+        income_color[client_x] = "blue"
+        credit_color[client_x] = "red"
+        fig.add_trace(
+            go.Bar(
+                x=x,
+                y=list(group.groupby(filter_drop, sort=False)
+                       ["AMT_INCOME_TOTAL"].mean()),
+                name="Monthly income",
+                marker_color=income_color
+            ),
+            row=1,
+            col=2
+        )
+        fig.add_trace(
+            go.Bar(
+                x=x,
+                y=list(group.groupby(filter_drop, sort=False)
+                       ["AMT_CREDIT"].mean()),
+                name="Credit",
+                marker_color=credit_color
+            ),
+            row=1,
+            col=2
+        )
+        fig.update_layout(
+            #uniformtext_minsize=12,
+            #uniformtext_mode="hide",
+            height=500,
+            width=1500,
+            template="simple_white",
+            showlegend=False
+        )
+        return fig
+
+@app.callback(
+    Output("remind_output", "children"),
+    Input("group_drop", "value"),
+    Input("id_input", "value"),
+    Input("input_button", "n_clicks")
+)
+def generate_reminder(group_drop, id_input, n_clicks):
+    if n_clicks == 0:
+        raise exceptions.PreventUpdate
+    else:
+        if id_input is None:
+            raise exceptions.PreventUpdate
+        if id_input not in list(client["SK_ID_CURR"]):
+            raise exceptions.PreventUpdate
+        client_ID2 = {"SK_ID_CURR": id_input}
+        id_client = client[client["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
+        df = pd.DataFrame({
+            "GROUP (similar clients)" : group_drop,
+            "CLIENT INFO (for recall)" : id_client[group_drop].values
+        })
+        return DataTable(
+            data=df.to_dict("records"),
+            style_cell={"textAlign": "center"},
+            fill_width=False
+        )
 
 if __name__ == "__main__":
     app.run(debug=True)
