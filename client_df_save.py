@@ -7,6 +7,7 @@ client.fillna("NaN", inplace=True)
 client["DAYS_BIRTH"] = client["DAYS_BIRTH"].apply(
     lambda x: int(np.abs(x) / 365.25)
 )
+client.rename(columns={"DAYS_BIRTH": "YEARS_BIRTH"})
 client["ORGANIZATION_TYPE"] = client["ORGANIZATION_TYPE"].apply(
     lambda x: x.split(":")[0]
 )
