@@ -11,17 +11,12 @@ from plotly.subplots import make_subplots
 
 client = joblib.load("data/client_test.sav")
 
-app = Dash(__name__)
-
-server = app.server
-
 blue_score = {"color": "blue"}
 red_score = {"color": "red"}
 purple_error = {"color": "purple"}
-
 client_data = [
     "CODE_GENDER",
-    "DAYS_BIRTH",
+    "YEARS_BIRTH",
     "NAME_FAMILY_STATUS",
     "CNT_CHILDREN",
     "NAME_HOUSING_TYPE",
@@ -31,6 +26,7 @@ client_data = [
     "AMT_INCOME_TOTAL",
     "AMT_CREDIT"
 ]
+group_data = client_data[:-2]
 client_rows = [
     "Gender",
     "Age",
@@ -43,16 +39,14 @@ client_rows = [
     "Monthly income (€, 05-18-2018)",
     "Credit (€, 05-18-2018)"
 ]
-client_opt = [
-    "CODE_GENDER",
-    "DAYS_BIRTH",
-    "NAME_FAMILY_STATUS",
-    "CNT_CHILDREN",
-    "NAME_HOUSING_TYPE",
-    "NAME_EDUCATION_TYPE",
-    "OCCUPATION_TYPE",
-    "ORGANIZATION_TYPE"
-]
+age_bins = [17, 24, 34, 44, 54, 64, 74]
+age_labels = ["25-", "25-34", "35-44", "45-54", "55-64", "65+"]
+child_bins = [-1, 0, 1, 2, 20]
+child_labels = ["0", "1", "2", "3+"]
+
+app = Dash(__name__)
+
+server = app.server
 
 app.layout = html.Div([
     html.Div([
@@ -79,8 +73,7 @@ app.layout = html.Div([
         ),
         dcc.Checklist(
             id="group_list",
-            options=client_opt,
-            #value=["CODE_GENDER"],
+            options=group_data,
             inline=True
         ),
         html.Br(),
@@ -88,7 +81,7 @@ app.layout = html.Div([
         html.H3("Compare clients by:"),
         dcc.Dropdown(
             id="filter_drop",
-            options=client_opt,
+            options=group_data,
             value="CODE_GENDER",
             clearable=False
         ),
@@ -196,9 +189,21 @@ def generate_figure(group_list, filter_drop, id_input, n_clicks):
             raise exceptions.PreventUpdate
         if id_input not in list(client["SK_ID_CURR"]):
             raise exceptions.PreventUpdate
+        group = joblib.load("data/client_test.sav")
+        group["YEARS_BIRTH"] = pd.cut(
+            group["YEARS_BIRTH"],
+            age_bins,
+            labels=age_labels,
+            ordered=False
+        ).astype(str)
+        group["CNT_CHILDREN"] = pd.cut(
+            group["CNT_CHILDREN"],
+            child_bins,
+            labels=child_labels,
+            ordered=False
+        ).astype(str)
         client_ID2 = {"SK_ID_CURR": id_input}
-        id_client = client[client["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
-        group = client
+        id_client = group[group["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
         if group_list is not None:
             for i in range(len(group_list)):
                 group = (group[group[group_list[i]].values
@@ -255,8 +260,6 @@ def generate_figure(group_list, filter_drop, id_input, n_clicks):
             col=2
         )
         fig.update_layout(
-            #uniformtext_minsize=12,
-            #uniformtext_mode="hide",
             height=500,
             width=1500,
             template="simple_white",
