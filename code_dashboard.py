@@ -26,7 +26,16 @@ client_data = [
     "AMT_INCOME_TOTAL",
     "AMT_CREDIT"
 ]
-group_data = client_data[:-2]
+group_data = [
+    "CODE_GENDER",
+    "YEARS_CLASS",
+    "NAME_FAMILY_STATUS",
+    "CHILD_CLASS",
+    "NAME_HOUSING_TYPE",
+    "NAME_EDUCATION_TYPE",
+    "OCCUPATION_TYPE",
+    "ORGANIZATION_TYPE"
+]
 client_rows = [
     "Gender",
     "Age",
@@ -39,10 +48,6 @@ client_rows = [
     "Monthly income (€, 05-18-2018)",
     "Credit (€, 05-18-2018)"
 ]
-age_bins = [17, 24, 34, 44, 54, 64, 74]
-age_labels = ["25-", "25-34", "35-44", "45-54", "55-64", "65+"]
-child_bins = [-1, 0, 1, 2, 20]
-child_labels = ["0", "1", "2", "3+"]
 
 app = Dash(__name__)
 
@@ -189,19 +194,7 @@ def generate_figure(group_list, filter_drop, id_input, n_clicks):
             raise exceptions.PreventUpdate
         if id_input not in list(client["SK_ID_CURR"]):
             raise exceptions.PreventUpdate
-        group = joblib.load("data/client_test.sav")
-        group["YEARS_BIRTH"] = pd.cut(
-            group["YEARS_BIRTH"],
-            age_bins,
-            labels=age_labels,
-            ordered=False
-        ).astype(str)
-        group["CNT_CHILDREN"] = pd.cut(
-            group["CNT_CHILDREN"],
-            child_bins,
-            labels=child_labels,
-            ordered=False
-        ).astype(str)
+        group = client
         client_ID2 = {"SK_ID_CURR": id_input}
         id_client = group[group["SK_ID_CURR"]==client_ID2["SK_ID_CURR"]]
         if group_list is not None:
