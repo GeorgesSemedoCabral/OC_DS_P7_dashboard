@@ -11,6 +11,8 @@ from plotly.subplots import make_subplots
 
 client = joblib.load("data/client_test.sav")
 
+# Appel en amont de plusieurs variables récurrentes
+
 blue_score = {"color": "blue"}
 red_score = {"color": "red"}
 purple_error = {"color": "purple"}
@@ -25,7 +27,7 @@ client_data = [
     "ORGANIZATION_TYPE",
     "AMT_INCOME_TOTAL",
     "AMT_CREDIT"
-]
+]   # (1)
 group_data = [
     "CODE_GENDER",
     "YEARS_CLASS",
@@ -35,7 +37,7 @@ group_data = [
     "NAME_EDUCATION_TYPE",
     "OCCUPATION_TYPE",
     "ORGANIZATION_TYPE"
-]
+]   # (2)
 client_rows = [
     "Gender",
     "Age",
@@ -47,7 +49,7 @@ client_rows = [
     "Organization",
     "Monthly income (€, 05-18-2018)",
     "Credit (€, 05-18-2018)"
-]
+]   # (1)
 
 app = Dash(__name__)
 
@@ -94,6 +96,8 @@ app.layout = html.Div([
     ])
 ])
 
+# Fonction de récupération du score de prédiction et de sa probabilité depuis l'API, via une requête POST
+
 @app.callback(
     Output("id_output", "children"),
     Output("id_output", "style"),
@@ -122,6 +126,8 @@ def call_score(id_input, n_clicks):
                 score.json()["SCORE"], score.json()["PROBA"]
             ), red_score
 
+# Fonction de récupération des données de SHAP depuis l'API, via une requête POST, et de génération du graphique d'interprétation au format JavaScript
+
 @app.callback(
     Output("json_output", "children"),
     Input("id_input", "value"),
@@ -144,13 +150,16 @@ def call_features(id_input, n_clicks):
             features.json()["explain_value"],
             np.array(features.json()["shap_values"]),
             np.array(features.json()["app_values"]),
-            np.array(features.json()["features"])
+            np.array(features.json()["features"]),
+            link="logit"
         )
         shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
         return html.Iframe(
             srcDoc=shap_html,
             style={"width": "200%", "height": "110px", "border": 0}
         )
+
+# Fonction de génération d'un tableau regroupant les informations descriptives du client, via des filtres choisis au préalable (voir (1))
 
 @app.callback(
     Output("table_output", "children"),
@@ -178,6 +187,8 @@ def generate_table(id_input, n_clicks):
             style_cell={"textAlign": "center"},
             fill_width=False
         )
+
+# Fonction de génération de deux graphiques pour comparer les informations descriptives du client avec l'ensemble des clients ou un groupe de clients similaires, en fonction des cases cochées (voir (2))
 
 @app.callback(
     Output("graph_01", "figure"),
@@ -259,6 +270,8 @@ def generate_figure(group_list, filter_drop, id_input, n_clicks):
             showlegend=False
         )
         return fig
+
+# Fonction de génération d'un tableau rappelant les informations descriptives du client, en fonction des cases cochées (voir (2))
 
 @app.callback(
     Output("remind_output", "children"),
